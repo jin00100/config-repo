@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# 继承 base 中的所有配置
+bases:
+- ../../base
+
+# 为所有资源名称添加前缀
+namePrefix: staging-
+
+# Staging 环境的副本数设置为 2
+replicas:
+- name: my-app
+  count: 2
+
