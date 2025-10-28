@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-app-staging
+  namespace: argocd  # Argo CD 应用必须创建在 argocd 命名空间下
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/jin00100/config-repo.git # <-- 替换为您的配置仓库地址
+    targetRevision: HEAD
+    path: overlays/staging  # 监控 staging 的 overlay 路径
+  destination:
+    server: https://kubernetes.default.svc  # 部署到当前 K8s 集群
+    namespace: staging  # 部署到 staging 命名空间
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true  # 如果命名空间不存在，自动创建
